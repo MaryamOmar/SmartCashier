@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "96115167918",
+    "firebase_url": "https://flutterfire-78e77.firebaseio.com",
+    "project_id": "flutterfire-78e77",
+    "storage_bucket": "flutterfire-78e77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96115167918:android:045b5ac41319d1436fd33f",
+        "android_client_info": {
+          "package_name": "flutter.example.com.test_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96115167918-kr6tpueh1etive8kj04hos7qfu2b31dt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi9-i9gMdWAHOxNXA0cZZbJy9IP7_14CU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96115167918-kr6tpueh1etive8kj04hos7qfu2b31dt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96115167918:android:46e42533ab32b7876fd33f",
+        "android_client_info": {
+          "package_name": "net.shoppingcart.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96115167918-kr6tpueh1etive8kj04hos7qfu2b31dt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi9-i9gMdWAHOxNXA0cZZbJy9IP7_14CU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96115167918-kr6tpueh1etive8kj04hos7qfu2b31dt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
