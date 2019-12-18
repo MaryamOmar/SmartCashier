@@ -45,9 +45,7 @@ public class ScanActivity extends AppCompatActivity {
     private List<Product> productsList;
     private DatabaseReference databaseReference;
 
-//    private FirebaseAuth firebaseAuth;
-//    private FirebaseAuth.AuthStateListener mAuthListener;
-    private String uid = "000";
+    private String uid;
 
 
     @Override
@@ -55,11 +53,11 @@ public class ScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        getSupportActionBar().setTitle("Scan product");
+        getSupportActionBar().setTitle("Scan products");
         productsList = new ArrayList<>();
 
         fetchProducts();
-        //firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseAuth = FirebaseAuth.getInstance();
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -67,31 +65,9 @@ public class ScanActivity extends AppCompatActivity {
         if(user!=null) {
             uid = user.getUid();
         }else {
-//            startActivity(new Intent(ScanActivity.this, LoginActivity.class));
-//            finish();
-
+            startActivity(new Intent(ScanActivity.this, LoginActivity.class));
+            finish();
         }
-
-
-/*
-
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public  void  onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                if(user!=null){
-                    uid = user.getUid();
-                }
-
-                else{
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                }
-            }
-
-
-        };
-*/
 
         mCodeScanner = new CodeScanner(getApplicationContext(), findViewById(R.id.scanner));
 
@@ -108,8 +84,6 @@ public class ScanActivity extends AppCompatActivity {
                 dialog.setOnDismissListener(d -> mCodeScanner.startPreview());
                 dialog.show();
             }
-
-            //postToDatabase(result.getText());
 
 
         }));

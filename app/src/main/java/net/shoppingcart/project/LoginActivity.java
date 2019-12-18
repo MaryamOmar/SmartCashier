@@ -36,8 +36,9 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             uid = user.getUid();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
         setContentView(R.layout.activity_login);
@@ -50,16 +51,16 @@ public class LoginActivity extends AppCompatActivity {
         tvSignup = findViewById(R.id.tvsignup);
         btnLogin = (Button) findViewById(R.id.btn_login);
         tvForget = findViewById(R.id.tvforget);
-        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar2);
+        progressBar.setVisibility(View.INVISIBLE);
 
         auth = FirebaseAuth.getInstance();
 
         tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
-                //finish();
-                //Toast.makeText(getApplicationContext(), "SignUp", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -73,35 +74,40 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnLogin.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+
                 String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    btnLogin.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
                 }
 
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                    btnLogin.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
                 }
 
-                //progressBar.setVisibility(View.VISIBLE);
+
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                btnLogin.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.GONE);
-                                if(!task.isSuccessful()){
-                                    if(password.length() < 6){
-                                        inputPassword.setError("Min password. Please");
-                                    }else {
-                                        Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-                                    }
-                                }else {
+
+                                if(task.isSuccessful()){
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
-                                    finish();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

@@ -28,11 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         //getSupportActionBar().setTitle("Home");
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user == null){
-//            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-//            finish();
-        }
+        auth = FirebaseAuth.getInstance();
+
         TextView text = findViewById(R.id.scan);
         text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,22 +70,10 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user != null) {
                     auth.signOut();
-                }else{
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    finish();
                 }
 
-                FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user == null) {
-
-                            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                            finish();
-                        }
-                    }
-                };
                 return true;
 
             default:

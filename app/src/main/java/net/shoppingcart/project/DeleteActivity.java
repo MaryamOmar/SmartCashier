@@ -25,7 +25,7 @@ import java.util.Objects;
 
 public class DeleteActivity extends AppCompatDialog {
     private DatabaseReference databaseReference;
-    private String uid="000";
+    private String uid;
 
     public DeleteActivity(@NonNull Context context, CartItem cartItem){
         super(context, resolveDialogTheme(context));
@@ -59,7 +59,6 @@ public class DeleteActivity extends AppCompatDialog {
         CartActivity.deleteCartItem(cartItem);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = "000";
         if(user != null){
             uid = user.getUid();
         }

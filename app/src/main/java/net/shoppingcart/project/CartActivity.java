@@ -1,6 +1,7 @@
 package net.shoppingcart.project;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,7 +34,7 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
     private static List<CartItem> cartItems;
-    private String uid = "000";
+    private String uid;
     private ListView lv;
     private Button btnCheckout;
     private TextView total;
@@ -55,6 +56,10 @@ public class CartActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             uid = user.getUid();
+        }else {
+            Intent intent = new Intent(CartActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
         btnCheckout = findViewById(R.id.btncheckout);
@@ -76,7 +81,7 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 calculatePrice();
 
-                PaymentActivity dialog = new PaymentActivity(CartActivity.this, value);
+                PaymentActivity dialog = new PaymentActivity(CartActivity.this, value, uid);
                 dialog.show();
             }
         });

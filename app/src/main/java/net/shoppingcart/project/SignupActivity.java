@@ -31,34 +31,44 @@ public class SignupActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        getSupportActionBar().setTitle("Sign up");
 
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         if(user!=null) {
-            startActivity(new Intent(SignupActivity.this, MainActivity.class));
-            finish();
+            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
 
         //btnSignIn = ()
         btnSignUp = (Button) findViewById(R.id.btn_signup);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
-        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        progressBar.setVisibility(View.INVISIBLE);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnSignUp.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
+
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    btnSignUp.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
                 }
 
                 if(TextUtils.isEmpty(password)){
                     Toast.makeText(getApplicationContext(), "Enter Password!", Toast.LENGTH_SHORT).show();
+                    btnSignUp.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                     return;
                 }
 
@@ -68,12 +78,15 @@ public class SignupActivity extends AppCompatActivity {
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressBar.setVisibility(View.GONE);
+                                btnSignUp.setVisibility(View.VISIBLE);
 
-                                if(!task.isSuccessful()){
-                                    //progressBar.setVisibility(View.GONE);
+                                if(task.isSuccessful()){
+                                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
                                 }else {
-                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                                    finish();
+                                    Toast.makeText(getApplicationContext(), "Failed to login", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

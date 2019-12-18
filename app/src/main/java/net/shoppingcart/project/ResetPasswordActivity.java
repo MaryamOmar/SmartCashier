@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,21 +28,28 @@ public class ResetPasswordActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+        getSupportActionBar().setTitle("Reset Password");
 
         inputEmail = (EditText) findViewById(R.id.email);
         btnReset = (Button) findViewById(R.id.btn_submit);
 
-        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar3);
+        progressBar.setVisibility(View.GONE);
 
         auth = FirebaseAuth.getInstance();
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnReset.setVisibility(View.GONE);
+
                 String email = inputEmail.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(getApplication(), "Enter your registered email id", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    btnReset.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -50,11 +58,16 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                progressBar.setVisibility(View.GONE);
+                                btnReset.setVisibility(View.VISIBLE);
+
                                 if(task.isSuccessful()){
-                                    Toast.makeText(ResetPasswordActivity.this, "We have sent instructions", Toast.LENGTH_SHORT).show();
+                                    TextView textView = findViewById(R.id.textView6);
+                                    textView.setText("Please check your email and follow instructions");
 
                                 }else {
-                                    Toast.makeText(ResetPasswordActivity.this, "Failed to send reset password", Toast.LENGTH_SHORT).show();
+                                    TextView textView = findViewById(R.id.textView6);
+                                    textView.setText("Failed to reset password. Check if email is correct");
                                 }
 
                                 progressBar.setVisibility(View.GONE);
