@@ -22,6 +22,7 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -61,14 +62,14 @@ public class ScanActivity extends AppCompatActivity {
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+/*
         if(user!=null) {
             uid = user.getUid();
         }else {
             startActivity(new Intent(ScanActivity.this, LoginActivity.class));
             finish();
         }
-
+*/
         mCodeScanner = new CodeScanner(getApplicationContext(), findViewById(R.id.scanner));
 
         mCodeScanner.setDecodeCallback(result -> ScanActivity.this.runOnUiThread(() -> {
@@ -101,7 +102,13 @@ public class ScanActivity extends AppCompatActivity {
             mPermissionGranted = true;
         }
 
-
+        FloatingActionButton btncart = findViewById(R.id.floatingActionButton);
+        btncart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CartActivity.class));
+            }
+        });
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -154,7 +161,6 @@ public class ScanActivity extends AppCompatActivity {
                     productsList.add(product);
                 }
 
-                //Toast.makeText(getApplicationContext(), dataSnapshot1.toString(), Toast.LENGTH_LONG).show();
             }
         }
 
