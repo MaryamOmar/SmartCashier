@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private Button btnLogin;
-    private TextView tvSignup, tvForget;
+    private TextView tvSignup, tvForget, tvGuest;
     private ProgressBar progressBar;
     private String uid = "";
 
@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Forget", Toast.LENGTH_SHORT).show();
             }
         });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +95,11 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                Intent intent = new Intent(LoginActivity.this,  ScanActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
+/*
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -103,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
 
                                 if(task.isSuccessful()){
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this,  ScanActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 } else {
@@ -111,6 +116,8 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
+
+*/
             }
         });
 
