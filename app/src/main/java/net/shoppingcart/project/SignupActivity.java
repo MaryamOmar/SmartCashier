@@ -4,12 +4,13 @@ package net.shoppingcart.project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.fragment.app.FragmentActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +27,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
+    private static final String TAG = SignupActivity.class.getName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,33 @@ public class SignupActivity extends AppCompatActivity {
 
                 //progressBar.setVisibility(View.VISIBLE);
                 //create user
+                Intent intent = new Intent(SignupActivity.this,  ScanActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+/*
+                auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "createUserWithEmail:success");
+                                    FirebaseUser user = auth.getCurrentUser();
+                                    updateUI(user);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    Toast.makeText(SignupActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                    updateUI(null);
+                                }
+
+                                // ...
+                            }
+                        });*/
+/*
+
+                            /*
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -89,11 +118,24 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Failed to login", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                        });
+                        });*/
             }
 
         });
 
+
+
+    }
+
+    public void updateUI(FirebaseUser account){
+
+        if(account != null){
+            Toast.makeText(this,"U Signed up successfully",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this,ScanActivity.class));
+
+        }else {
+            Toast.makeText(this,"error in signing up",Toast.LENGTH_LONG).show();
+        }
 
     }
 
