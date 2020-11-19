@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +33,7 @@ import java.util.List;
 public class CartActivity extends AppCompatActivity {
     private static List<CartItem> cartItems;
     private String uid;
+    private FirebaseAuth auth;
     private ListView lv;
     private Button btnCheckout;
     private TextView total;
@@ -48,19 +47,20 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
-
-        getSupportActionBar().setTitle("My cart");
-        cartItems = new ArrayList<>();
+        auth = FirebaseAuth.getInstance();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             uid = user.getUid();
-        }else {
-            Intent intent = new Intent(CartActivity.this, LoginActivity.class);
+            Intent intent = new Intent(CartActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+
+        setContentView(R.layout.activity_cart);
+
+        getSupportActionBar().setTitle("My cart");
+        cartItems = new ArrayList<>();
 
         btnCheckout = findViewById(R.id.btncheckout);
         lv = findViewById(R.id.listview);
@@ -102,7 +102,7 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        fetchCartItems();
+        //fetchCartItems();
         //tempItems();
         calculatePrice();
     }
@@ -118,6 +118,7 @@ public class CartActivity extends AppCompatActivity {
         total.setText(String.format("%.2f", value));
 
     }
+
 
     void fetchCartItems(){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("cart_list").child(uid);
